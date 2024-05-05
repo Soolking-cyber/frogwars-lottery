@@ -97,8 +97,13 @@ export default function EnterLottery() {
   const { runContractFunction: getTotalBalance } = useWeb3Contract({
     abi: IERC20,
     contractAddress: tokenAddress,
+<<<<<<< Updated upstream
     functionName: "balanceOf",
     params: {account: lotteryAddress},
+=======
+    functionName: "approve",
+    params: {spender: lotteryAddress, amount: ethers.utils.parseEther("10")},
+>>>>>>> Stashed changes
   });
 
   const handleClick = async () => {
@@ -177,12 +182,13 @@ export default function EnterLottery() {
     <div className="px-10 py-5">
       {lotteryAddress ? (
         <div className="space-y-5">
-          <p className=" text-[50px] text-purple-500 font-customFont text-center space-x-5">
+          <p className=" text-[50px] text-blue-500 font-bold text-center space-x-5">
             Entrance Fee =
-            <span className="text-green-500 font-customFont px-5">
+            <span className="px-5 text-green-500">
               {entranceFee && ethers.utils.formatUnits(entranceFee, "ether")} CRYSTAL
             </span>
           </p>
+<<<<<<< Updated upstream
           <p className=" text-[50px] text-blue-400 font-bold text-center space-x-5">
             Current Pot =
             <span className="text-blue-400 px-5">
@@ -190,16 +196,25 @@ export default function EnterLottery() {
             </span>
           </p>
           <p className="text-4xl text-gray-300 font-customFont font-semibold text-center">Players = <span className="text-blue-500">
+=======
+          <p className=" text-[50px] text-blue-500 font-bold text-center space-x-5">
+            Current Pot =
+            <span className="px-5 text-green-500">
+              {entranceFee && ethers.utils.formatUnits(entranceFee, "ether")} CRYSTAL
+            </span>
+          </p>
+          <p className="text-4xl font-semibold text-center text-gray-300">Players = <span className="text-blue-500">
+>>>>>>> Stashed changes
           {allPlayers && allPlayers}
             </span> </p>
-          <p className="flex items-center gap-x-2 justify-center"> <img className="w-20" src="/images/cup.png" alt="Winner" /> <span className="text-3xl font-customFont text-gray-300"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
+          <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
            <span>
-            <button className="bg-purple-500 c text-white px-3 py-1 font-customFont rounded-md" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
+            <button className="px-3 py-1 text-white bg-blue-500 rounded-md" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
            </span>
           </p>
           <div className="text-center">
             <button
-              className="cursor-pointer mt-12 w-40 h-10 px-4 py-2 font-customFont text-white bg-purple-600 rounded-md hover:bg-purple-700"
+              className="w-40 h-10 px-4 py-2 mt-12 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700"
               disabled={isFetching || isLoading || loading || btnLoading || lotteryNotOpen}
               onClick={handleClick}
             >
@@ -214,7 +229,7 @@ export default function EnterLottery() {
           </div>
         </div>
       ) : (
-        <div className="text-white text-center font-customFont">Wallet Not Connected To Linea Mainnet (Connect Using Connect wallet Button in the top right, then switch to Linea Mainnet)</div>
+        <div className="text-center text-white">Wallet Not Connected To Linea Mainnet (Connect Using Connect wallet Button in the top right, then switch to Linea Mainnet)</div>
       )}
     </div>
   );
