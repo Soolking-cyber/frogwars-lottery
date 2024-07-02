@@ -29,8 +29,17 @@ export default function Home() {
       <main>
         <Navbar />
         <EnterLottery />
-        <button onClick="window.location='https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa';">Buy Crystals</button>
       </main>
+    <h2>Buy Crystals from Nile exchange</h2>
+    
+    <button onclick="myFunction()">Get Crystals</button>
+    
+    <script>
+    function myFunction() {
+      location.replace("https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa")
+    }
+    </script>
+    
     </div>
   );
 }
