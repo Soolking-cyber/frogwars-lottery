@@ -18,7 +18,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="min-h-screen bg-black">
       <Head>
         <title>FrogWars | Decentralized Lottery</title>
         <meta name="description" content="FrogWars Lottery, get a chance to win CRYSTAL" />
@@ -29,6 +29,7 @@ export default function Home() {
       <main>
         <Navbar />
         <EnterLottery />
+        <button onclick="window.location='https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa';">Buy Crystals</button>
       </main>
     </div>
   );
