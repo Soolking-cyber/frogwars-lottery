@@ -23,8 +23,8 @@ export default function MintContainer() {
 
   return (
     <div >
-      <h1 className="text-2xl font-extrabold text-gray-200 text-center">Frog Wars - HUNGER FOR POWER!</h1>
-      <p className="my-4 text-lg text-gray-200 text-center">MINT Frog Wars - Edition II NFT to enter lottery!</p>
+      <h1 className="text-2xl font-extrabold text-center text-gray-200">Frog Wars - BURN BABY, BURN!</h1>
+      <p className="my-4 text-lg text-center text-gray-200">MINT Frog Wars - Edition II NFT to enter lottery!</p>
 
       <div className={`${styles.nftBox} ${styles.spacerBottom}  ${styles.collectionContainer}`}>
         <Image src="/images/book.png" width={"240"} height={"400"} alt="mine" />
