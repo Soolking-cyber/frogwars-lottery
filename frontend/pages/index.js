@@ -55,7 +55,7 @@ export default function Home() {
       setContent(<div className="text-red-300">Failed to check the owned comic books. Something went wrong: <p className="text-red-500">{JSON.stringify(ownedNftsError, null, 2)}</p></div>);
     } else if (ownedNfts !== undefined && ownedNfts.length === 0) {
       // 2. No NFTs - mint page
-      setContent(<MintContainer />);
+      setContent(<MintContainer setOwnedNfts={setOwnedNfts} />);
     } else if (ownedNfts !== undefined && ownedNfts.length > 0) {
       // 3. Has NFT already - show lottery
       setContent(<EnterLottery />);

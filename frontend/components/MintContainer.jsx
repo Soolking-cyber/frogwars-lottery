@@ -6,20 +6,15 @@ import styles from "../styles/Home.module.css";
 import { contractAddresses } from "../constants";
 import { client } from "./EnterLottery";
 import {claimTo} from "thirdweb/extensions/erc1155";
-import { useRouter } from 'next/router'
 
-export default function MintContainer() {
+export default function MintContainer({setOwnedNfts}) {
   const account = useActiveAccount();
   const chain = linea;
   const comicBookAddress = contractAddresses[chain.id][2];
-  const router = useRouter()
 
   const editionDrop = getContract({
     client, address: comicBookAddress, chain
   });
-
-  // todo change it to the 
-  // https://github.com/thirdweb-example/edition-drop/blob/main/pages/index.tsx
 
   return (
     <div >
@@ -32,32 +27,30 @@ export default function MintContainer() {
 
       <div className={styles.smallMargin + ' ' + styles.collectionContainer}>
       <TransactionButton
-      theme="dark"
-      transaction={() => {
-        // Create a transaction object and return it
-        const tx = claimTo({
-          contract: editionDrop,
-          to: account.address,
-          tokenId: 0n,
-          quantity: 1n,
-        });
-        return tx;
-      }}
-      onTransactionSent={(result) => {
-        console.log("Transaction submitted", result.transactionHash);
-      }}
-      onTransactionConfirmed={(receipt) => {
-        console.log("Transaction confirmed", receipt.transactionHash);
-        router.push('/');
-      }}
+        theme="dark"
+        transaction={() => {
+          // Create a transaction object and return it
+          const tx = claimTo({
+            contract: editionDrop,
+            to: account.address,
+            tokenId: 0n,
+            quantity: 1n,
+          });
+          return tx;
+        }}
+        onTransactionSent={(result) => {
+          console.log("Transaction submitted", result.transactionHash);
+        }}
+        onTransactionConfirmed={(receipt) => {
+          console.log("Transaction confirmed", receipt.transactionHash);
+          setOwnedNfts([1])
+        }}
       onError={(error) => {
         console.error("Transaction error", error);
       }}
     >
           MINT 
-    </TransactionButton>
-          {/* contractAddress={comicBookAddress} */}
-          {/* action={(contract) => contract.erc1155.claim(0, 1)} */}
+        </TransactionButton>
       </div>
     </div>
   );
