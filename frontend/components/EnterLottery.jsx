@@ -187,14 +187,15 @@ console.log(contract);
     <div className="px-10 py-5">
       {lotteryAddress ? (
         <div className="space-y-5">
-          <p className=" text-[50px] text-purple-500 font-customFont text-center space-x-5"> 
-            <span className="px-5 text-green-500 font-customFont">
+          <p className=" text-[50px] text-purple-500 fort-customFont text-center space-x-5">
+            Entrance Fee =
+            <span className="px-5 text-green-500">
               {entranceFee && ethers.utils.formatUnits(entranceFee, "ether")} CRYSTAL
             </span>
           </p>
-          <p className=" text-[50px] text-purple-500 font-customFont text-center space-x-5">
+          <p className=" text-[50px] text-purple-500 font-cutomFont text-center space-x-5">
             Current Pot =
-            <span className="px-5 text-green-500 font-customFont">
+            <span className="px-5 text-green-500">
               {parseFloat(totalBalance).toFixed(4).toString()} CRYSTAL
             </span>
           </p>
