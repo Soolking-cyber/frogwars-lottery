@@ -6,7 +6,7 @@ import { Loading, useNotification } from "web3uikit";
 import { 
   useReadContract,
   useActiveWalletConnectionStatus,  
-  // getGasPrice, 
+  getGasPrice, 
   useActiveAccount,
 } from "thirdweb/react";
 import {createThirdwebClient, getContract} from "thirdweb";
@@ -45,22 +45,22 @@ export default function EnterLottery() {
     const transaction = await contract.approve(
         lotteryAddress,
         ethers.utils.parseEther("1000"),{
-          // gasLimit: 200000,
-          // gasPrice: gasPrice,
+           gasLimit: 200000,
+           gasPrice: gasPrice,
     });
     return transaction;
   }
 
   const enterLotteryRaw = async function() {
-    // const provider = getChainProvider(Linea);
-    // const gasPrice = await getGasPrice(provider);
+    const provider = getChainProvider(Linea);
+    const gasPrice = await getGasPrice(provider);
     const signer = await ethers5Adapter.signer.toEthers({client, account, chain});
 
     const contract = new ethers.Contract(lotteryAddress, abi, signer);
 
     const transaction = await contract.enterLottery({
-      // gasLimit: 200000,
-      // gasPrice: gasPrice,
+        gasLimit: 200000,
+        gasPrice: gasPrice,
     });
     return transaction;
   }
@@ -187,29 +187,29 @@ console.log(contract);
     <div className="px-10 py-5">
       {lotteryAddress ? (
         <div className="space-y-5">
-          <p className=" text-[50px] text-blue-500 font-bold text-center space-x-5">
+          <p className=" text-[50px] text-purple-500 font-customFont text-center space-x-5">
             Entrance Fee =
             <span className="px-5 text-green-500">
               {entranceFee && ethers.utils.formatUnits(entranceFee, "ether")} CRYSTAL
             </span>
           </p>
-          <p className=" text-[50px] text-blue-400 font-bold text-center space-x-5">
+          <p className=" text-[50px] text-purple-500 font-customFont text-center space-x-5">
             Current Pot =
-            <span className="text-blue-400 px-5">
+            <span className="px-5 text-green-500">
               {parseFloat(totalBalance).toFixed(4).toString()} CRYSTAL
             </span>
           </p>
-          <p className="text-4xl text-gray-300 font-customFont font-semibold text-center">Players = <span className="text-blue-500">
+          <p className="text-4xl font-semibold text-center text-gray-300 font-customFont">Players = <span className="text-green-500">
           {allPlayers && allPlayers}
             </span> </p>
-          <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
+          <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300 font-customFont"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
            <span>
-            <button className="px-3 py-1 text-white bg-blue-500 rounded-md" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
+            <button className="px-3 py-1 text-white bg-purple-600 rounded-md font-customFont" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
            </span>
           </p>
           <div className="text-center">
             <button
-              className="w-40 h-10 px-4 py-2 mt-12 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700"
+              className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700"
               disabled={isFetching || isLoading || loading || btnLoading || lotteryNotOpen}
               onClick={handleClick}
             >
@@ -221,6 +221,7 @@ console.log(contract);
                 <div>{lotteryNotOpen ? "Lottery Not Open" : "Enter Lottery"}</div>
               )}
             </button>
+            <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
           </div>
         </div>
       ) : (

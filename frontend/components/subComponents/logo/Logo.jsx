@@ -6,7 +6,7 @@ export default function Logo() {
     <div className='flex items-center cursor-pointer'>
       <img className='w-14' src="/images/crystal.gif" alt='award image' />
         {/*  <img className='w-14' src="/images/dice-img.png" alt="award image" /> */}
-        <p className='text-2xl px-3 font-customFont text-purple-500'>FrogWars Lottery</p>
+        <p className='px-3 text-xl text-purple-500 font-customFont'>FrogWars Lottery</p>
     </div>
   )
 }
