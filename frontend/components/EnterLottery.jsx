@@ -67,36 +67,27 @@ export default function EnterLottery() {
   const contract = getContract({client, chain, address: lotteryAddress, abi: abi });
   const token = getContract({client, chain, address: tokenAddress, abi: IERC20});
 
-  console.log(lotteryAddress);
-  console.log(tokenAddress);
-console.log(chain);
-console.log(contract);
-
   const {data: getEntranceFee,
     isLoading,
     isFetching,
   } = useReadContract({
     contract,
     method: "getEntranceFee",
-    // params: {},
   });
 
   const { data: getNumbersOfPlayers } = useReadContract({
     contract,
     method: "getNumbersOfPlayers",
-    // params: {},
   });
 
   const { data: getRecentWinner } = useReadContract({
     contract,
     method: "getRecentWinner",
-    // params: {},
   });
 
   const { data: getLotteryState } = useReadContract({
     contract,
     method: "getLotteryState",
-    // params: {},
   });
 
   const { data: getAllowance } = useReadContract({
