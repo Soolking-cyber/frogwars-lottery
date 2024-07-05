@@ -211,7 +211,7 @@ export default function EnterLottery() {
                 <div>{lotteryNotOpen ? "Lottery Not Open" : "Enter Lottery"}</div>
               )}
             </button>
-            <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
+            <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" target="_blank" className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
           </div>
         </div>
       ) : (
