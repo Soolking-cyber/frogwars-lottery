@@ -204,7 +204,7 @@ console.log(contract);
             </span> </p>
           <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300 font-customFont"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
            <span>
-            <button className="px-3 py-1 text-white bg-purple-500 rounded-md" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
+            <button className="px-3 py-1 text-white bg-purple-600 rounded-md" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
            </span>
           </p>
           <div className="text-center">
