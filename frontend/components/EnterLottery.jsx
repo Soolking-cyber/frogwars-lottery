@@ -209,7 +209,7 @@ console.log(contract);
           </p>
           <div className="text-center">
             <button
-              className="h-10 px-4 py-2 mt-12 mr-5 text-white bg-purple-600 rounded-md cursor-pointer w-80 font-customFont hover:bg-purple-700"
+              className="h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer w-80 font-customFont hover:bg-purple-700"
               disabled={isFetching || isLoading || loading || btnLoading || lotteryNotOpen}
               onClick={handleClick}
             >
@@ -221,7 +221,7 @@ console.log(contract);
                 <div>{lotteryNotOpen ? "Lottery Not Open" : "Enter Lottery"}</div>
               )}
             </button>
-            <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" className="w-40 h-10 px-4 py-2 mt-12 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
+            <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
           </div>
         </div>
       ) : (
