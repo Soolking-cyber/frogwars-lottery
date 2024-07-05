@@ -187,19 +187,18 @@ console.log(contract);
     <div className="px-10 py-5">
       {lotteryAddress ? (
         <div className="space-y-5">
-          <p className=" text-[50px] text-blue-500 font-bold text-center space-x-5">
-            Entrance Fee =
-            <span className="px-5 text-green-500">
+          <p className=" text-[50px] text-purple-500 font-customFont text-center space-x-5"> 
+            <span className="px-5 text-green-500 font-customFont">
               {entranceFee && ethers.utils.formatUnits(entranceFee, "ether")} CRYSTAL
             </span>
           </p>
-          <p className=" text-[50px] text-blue-400 font-bold text-center space-x-5">
+          <p className=" text-[50px] text-purple-500 font-customFont text-center space-x-5">
             Current Pot =
-            <span className="text-blue-400 px-5">
+            <span className="px-5 text-green-500 font-customFont">
               {parseFloat(totalBalance).toFixed(4).toString()} CRYSTAL
             </span>
           </p>
-          <p className="text-4xl text-gray-300 font-customFont font-semibold text-center">Players = <span className="text-blue-500">
+          <p className="text-4xl font-semibold text-center text-gray-300 font-customFont">Players = <span className="text-green-500">
           {allPlayers && allPlayers}
             </span> </p>
           <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
