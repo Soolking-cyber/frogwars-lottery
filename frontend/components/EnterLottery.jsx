@@ -204,12 +204,12 @@ console.log(contract);
             </span> </p>
           <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
            <span>
-            <button className="px-3 py-1 text-white bg-blue-500 rounded-md" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
+            <button className="px-3 py-1 text-white bg-purple-500 rounded-md" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
            </span>
           </p>
           <div className="text-center">
             <button
-              className="w-40 h-10 px-4 py-2 mt-12 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700"
+              className="w-40 h-10 px-4 py-2 mt-12 text-white bg-purple-600 rounded-md cursor-pointer hover:bg-purple-700"
               disabled={isFetching || isLoading || loading || btnLoading || lotteryNotOpen}
               onClick={handleClick}
             >
