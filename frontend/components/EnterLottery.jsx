@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { contractAddresses, abi, IERC20 } from "../constants";
 import {linea} from 'thirdweb/chains';
+import Image from "next/image";
 import { ethers } from "ethers";
 import { Loading, useNotification } from "web3uikit";
 import { 
