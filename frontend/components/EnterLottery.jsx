@@ -174,7 +174,7 @@ export default function EnterLottery() {
       };
       getAll();
     }
-  }, [connectionStatus, getEntranceFee, getNumbersOfPlayers, getTotalBalance, getAllowance, getLotteryState, getRecentWinner, lotteryAddress]);
+  }, [connectionStatus, getEntranceFee, getNumbersOfPlayers, getTotalBalance, getAllowance, getLotteryState, getRecentWinner]);
 
   return (
     <div className="px-10 py-5">

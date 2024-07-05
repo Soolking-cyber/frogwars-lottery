@@ -47,7 +47,7 @@ export default function Home() {
       })
     }
 
-  }, [account, editionDrop])
+  }, [account])
 
   useEffect(() => {
     // Something went wrong
