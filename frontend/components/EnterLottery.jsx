@@ -6,7 +6,6 @@ import { Loading, useNotification } from "web3uikit";
 import { 
   useReadContract,
   useActiveWalletConnectionStatus,  
-  getGasPrice, 
   useActiveAccount,
 } from "thirdweb/react";
 import {createThirdwebClient, getContract, getGasPrice} from "thirdweb";
@@ -46,22 +45,21 @@ export default function EnterLottery() {
     const transaction = await contract.approve(
         lotteryAddress,
         ethers.utils.parseEther("1000"),{
-          gasLimit: 200000,
-          gasPrice: gasPrice,
+           gasLimit: 200000,
+           gasPrice: gasPrice,
     });
     return transaction;
   }
 
   const enterLotteryRaw = async function() {
-    const provider = getChainProvider(Linea);
-    const gasPrice = await getGasPrice(provider);
+    const gasPrice = await getGasPrice({client, chain});
     const signer = await ethers5Adapter.signer.toEthers({client, account, chain});
 
     const contract = new ethers.Contract(lotteryAddress, abi, signer);
 
     const transaction = await contract.enterLottery({
-      gasLimit: 200000,
-      gasPrice: gasPrice,
+        gasLimit: 200000,
+        gasPrice: gasPrice,
     });
     return transaction;
   }
