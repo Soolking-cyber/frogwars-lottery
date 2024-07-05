@@ -29,7 +29,6 @@ export default function PageContent({content}) {
         <div className={styles.collectionContainer}>
           {content}
         </div>
-        <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" className="w-40 h-10 px-4 py-2 mt-12 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
       </main>
     </div>
   );
