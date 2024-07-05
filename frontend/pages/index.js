@@ -1,45 +1,65 @@
-import Head from "next/head";
-import Image from "next/image";
-import EnterLottery from "../components/EnterLottery";
-import Navbar from "../components/Navbar";
-import ConnectBtn from "../components/subComponents/btns/ConnectBtn";
-import Particles from "react-tsparticles";
-import tsConfig from '../configs/tsConfig.json'
-import { loadFull } from "tsparticles";
+"use client";
+
+import EnterLottery, {client} from "../components/EnterLottery";
+import Content from "../components/Main";
+import {
+  useActiveAccount,
+} from "thirdweb/react";
+import { useState, useEffect } from "react";
+import { contractAddresses } from "../constants";
+import {getOwnedNFTs} from "thirdweb/extensions/erc1155";
+import { getContract } from "thirdweb";
+import { linea } from "thirdweb/chains";
+
+import MintContainer from "../components/MintContainer";
 
 export default function Home() {
-  const particlesInit = async (main) => {
-    console.log(main);
+  const chain = linea;
+  const account = useActiveAccount();
+  const [ownedNfts, setOwnedNfts] = useState(undefined);
+  const [ownedNftsError, setOwnedNftsError] = useState(null);
 
-    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
-    await loadFull(main);
-  };
+  const comicBookAddress = contractAddresses[chain.id][2];
+  const [content, setContent] = useState(<div role="status">
+    <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+    </svg>
+    <span className="sr-only">Connect your wallet...</span>
+    <span className="sr-only text-gray-500">Loading parameters...</span>
+    </div>);
 
-  return (
-    <div className="min-h-screen bg-black">
-      <Head>
-        <title>FrogWars | Decentralized Lottery</title>
-        <meta name="description" content="FrogWars Lottery, get a chance to win CRYSTAL" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Particles init={particlesInit} options={tsConfig} />
+  const editionDrop = getContract({
+    client, address: comicBookAddress, chain
+  });
 
-      <main>
-        <Navbar />
-        <EnterLottery />
-      </main>
-    <h2>Buy Crystals from Nile exchange</h2>
-    
-    <button onclick="myFunction()">Get Crystals</button>
-    
-    <script>
-    function myFunction() {
-      location.replace("https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa")
+  useEffect(() => {
+    if (account !== undefined) {
+    getOwnedNFTs({contract: editionDrop, start: 0, count: 1, address: account.address}).then(nfts => {
+      setOwnedNfts(nfts);
+      console.log("NFTs were fetched", nfts);
+    }).catch(e => {
+      console.error("Failed to get nfts", e);
+      setOwnedNftsError(e);
+    })
     }
-    </script>
-    
-    </div>
+
+  }, [account])
+
+  useEffect(() => {
+    // Something went wrong
+    if (ownedNfts === undefined && ownedNftsError !== null) {
+      setContent(<div className="text-red-300">Failed to check the owned comic books. Something went wrong: <p className="text-red-500">{JSON.stringify(ownedNftsError, null, 2)}</p></div>);
+    } else if (ownedNfts !== undefined && ownedNfts.length === 0) {
+      // 2. No NFTs - mint page
+      setContent(<MintContainer />);
+    } else if (ownedNfts !== undefined && ownedNfts.length > 0) {
+      // 3. Has NFT already - show lottery
+      setContent(<EnterLottery />);
+    }
+  }, [ownedNfts, ownedNftsError])
+  
+  return (
+    <Content content={content}></Content>
   );
 }

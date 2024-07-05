@@ -1,4 +1,4 @@
-# FrogWards Lottery
+# FrogWars Lottery
 Decentralized Lottery.
 
 _DecentralizedLottery Deployed on **Linea MainNet**_ -> [0x3bb15e57aad0ba82c471e3d42ae51bf5f24b6d55](https://lineascan.build/address/0x3bb15e57aad0ba82c471e3d42ae51bf5f24b6d55)

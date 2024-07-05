@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useWeb3Contract, useMoralis } from "react-moralis";
 import { contractAddresses, abi, IERC20 } from "../constants";
+import {linea} from 'thirdweb/chains';
 import { ethers } from "ethers";
 import { Loading, useNotification } from "web3uikit";
-import Moralis from "moralis";
+import { 
+  useReadContract,
+  useActiveWalletConnectionStatus,  
+  // getGasPrice, 
+  useActiveAccount,
+} from "thirdweb/react";
+import {createThirdwebClient, getContract} from "thirdweb";
+import {ethers5Adapter} from "thirdweb/adapters/ethers5"
+import { useRouter } from "next/router";
+
+export const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID
+});
 
 export default function EnterLottery() {
   const [entranceFee, setEntranceFee] = useState();
@@ -14,102 +26,96 @@ export default function EnterLottery() {
   const [btnLoading, setBtnLoading] = useState(false);
   const [showFullAddress, setShowFullAddress] = useState(true);
   const [totalBalance, setTotalBalance] = useState("0.0");
-
-  const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis();
+  const router = useRouter();
+  
+  const chain = linea;
+  const account = useActiveAccount();
+  const connectionStatus = useActiveWalletConnectionStatus()
   const dispatch = useNotification();
 
-  const chainId = parseInt(chainIdHex);
   const lotteryAddress =
-    chainId in contractAddresses ? contractAddresses[chainId][0] : null;
-  const tokenAddress = chainId in contractAddresses ? contractAddresses[chainId][1] : null;
+    chain && chain.id in contractAddresses ? contractAddresses[chain.id][0] : null;
+  const tokenAddress = chain && chain.id in contractAddresses ? contractAddresses[chain.id][1] : null;
+
 
   const approveRaw = async function() {
-    const web3Provider = await Moralis.enableWeb3(); // Get ethers.js web3Provider
-    const gasPrice = await web3Provider.getGasPrice();
-
-    const signer = web3Provider.getSigner();
-
+    const signer = await ethers5Adapter.signer.toEthers({client, account, chain});
     const contract = new ethers.Contract(tokenAddress, IERC20, signer);
 
     const transaction = await contract.approve(
         lotteryAddress,
         ethers.utils.parseEther("1000"),{
-          gasLimit: 200000,
-          gasPrice: gasPrice,
+          // gasLimit: 200000,
+          // gasPrice: gasPrice,
     });
     return transaction;
   }
 
   const enterLotteryRaw = async function() {
-    const web3Provider = await Moralis.enableWeb3(); // Get ethers.js web3Provider
-    const gasPrice = await web3Provider.getGasPrice();
-
-    const signer = web3Provider.getSigner();
+    // const provider = getChainProvider(Linea);
+    // const gasPrice = await getGasPrice(provider);
+    const signer = await ethers5Adapter.signer.toEthers({client, account, chain});
 
     const contract = new ethers.Contract(lotteryAddress, abi, signer);
 
     const transaction = await contract.enterLottery({
-      gasLimit: 200000,
-      gasPrice: gasPrice,
+      // gasLimit: 200000,
+      // gasPrice: gasPrice,
     });
     return transaction;
   }
 
-  const {
-    runContractFunction: getEntranceFee,
+  const contract = getContract({client, chain, address: lotteryAddress, abi: abi });
+  const token = getContract({client, chain, address: tokenAddress, abi: IERC20});
+
+  console.log(lotteryAddress);
+  console.log(tokenAddress);
+console.log(chain);
+console.log(contract);
+
+  const {data: getEntranceFee,
     isLoading,
     isFetching,
-  } = useWeb3Contract({
-    abi,
-    contractAddress: lotteryAddress,
-    functionName: "getEntranceFee",
-    params: {},
+  } = useReadContract({
+    contract,
+    method: "getEntranceFee",
+    // params: {},
   });
 
-  const { runContractFunction: getNumbersOfPlayers } = useWeb3Contract({
-    abi,
-    contractAddress: lotteryAddress,
-    functionName: "getNumbersOfPlayers",
-    params: {},
+  const { data: getNumbersOfPlayers } = useReadContract({
+    contract,
+    method: "getNumbersOfPlayers",
+    // params: {},
   });
 
-  const { runContractFunction: getRecentWinner } = useWeb3Contract({
-    abi,
-    contractAddress: lotteryAddress,
-    functionName: "getRecentWinner",
-    params: {},
+  const { data: getRecentWinner } = useReadContract({
+    contract,
+    method: "getRecentWinner",
+    // params: {},
   });
 
-  const { runContractFunction: getLotteryState } = useWeb3Contract({
-    abi,
-    contractAddress: lotteryAddress,
-    functionName: "getLotteryState",
-    params: {},
+  const { data: getLotteryState } = useReadContract({
+    contract,
+    method: "getLotteryState",
+    // params: {},
   });
 
-  const { runContractFunction: getAllowance } = useWeb3Contract({
-    abi: IERC20,
-    contractAddress: tokenAddress,
-    functionName: "allowance",
-    params: {owner: account, spender: lotteryAddress},
+  const { data: getAllowance } = useReadContract({
+    contract: token,
+    method: "allowance",
+    params: [account.address, lotteryAddress],
   });
 
-  const { runContractFunction: getTotalBalance } = useWeb3Contract({
-    abi: IERC20,
-    contractAddress: tokenAddress,
-<<<<<<< Updated upstream
-    functionName: "balanceOf",
-    params: {account: lotteryAddress},
-=======
-    functionName: "approve",
-    params: {spender: lotteryAddress, amount: ethers.utils.parseEther("10")},
->>>>>>> Stashed changes
+  const { data: getTotalBalance } = useReadContract({
+    contract: token,
+    method: "balanceOf",
+    params: [lotteryAddress],
   });
 
   const handleClick = async () => {
     setBtnLoading(true);
 
-    const allowanceWei = (await getAllowance());
+    const allowanceWei = getAllowance;
     const allowance = parseFloat(ethers.utils.formatEther(allowanceWei));
     const fee = parseFloat(ethers.utils.formatUnits(entranceFee));
 
@@ -141,11 +147,7 @@ export default function EnterLottery() {
     handleNewNotification(tx);
     setBtnLoading(false);
 
-    const getNumOfPlayers = (await getNumbersOfPlayers()).toString();
-    setAllPlayers(getNumOfPlayers);
-
-    const getBalance = await getTotalBalance();
-    setTotalBalance(ethers.utils.formatEther(getBalance));
+    router.refresh();
   };
 
   const handleNewNotification = () => {
@@ -159,24 +161,27 @@ export default function EnterLottery() {
   };
 
   useEffect(() => {
-    if (isWeb3Enabled && lotteryAddress) {
+    if (connectionStatus === "connected" && lotteryAddress && getEntranceFee !== undefined && 
+      getNumbersOfPlayers !== undefined && getTotalBalance !== undefined && 
+      getAllowance !== undefined && 
+      getLotteryState !== undefined) {
       const getAll = async () => {
-        const getFee = (await getEntranceFee()).toString();
-        const getNumOfPlayers = (await getNumbersOfPlayers()).toString();
-        const getWinner = await getRecentWinner();
-        const getState = await getLotteryState();
+        const getFee = (getEntranceFee).toString();
+        const getNumOfPlayers = (getNumbersOfPlayers).toString();
+        const getWinner = getRecentWinner;
+        const getState = getLotteryState;
         setEntranceFee(getFee);
         setAllPlayers(getNumOfPlayers);
         setRecentWinner(getWinner);
         console.log(`State is: ${getState}. Closed? ${(getState != 1)}`);
         setLotteryNotOpen(getState != 1);
 
-        const getBalance = await getTotalBalance();
+        const getBalance = getTotalBalance;
         setTotalBalance(ethers.utils.formatEther(getBalance));
       };
       getAll();
     }
-  }, [isWeb3Enabled]);
+  }, [connectionStatus, getEntranceFee, getNumbersOfPlayers, getTotalBalance, getAllowance, getLotteryState]);
 
   return (
     <div className="px-10 py-5">
@@ -188,7 +193,6 @@ export default function EnterLottery() {
               {entranceFee && ethers.utils.formatUnits(entranceFee, "ether")} CRYSTAL
             </span>
           </p>
-<<<<<<< Updated upstream
           <p className=" text-[50px] text-blue-400 font-bold text-center space-x-5">
             Current Pot =
             <span className="text-blue-400 px-5">
@@ -196,15 +200,6 @@ export default function EnterLottery() {
             </span>
           </p>
           <p className="text-4xl text-gray-300 font-customFont font-semibold text-center">Players = <span className="text-blue-500">
-=======
-          <p className=" text-[50px] text-blue-500 font-bold text-center space-x-5">
-            Current Pot =
-            <span className="px-5 text-green-500">
-              {entranceFee && ethers.utils.formatUnits(entranceFee, "ether")} CRYSTAL
-            </span>
-          </p>
-          <p className="text-4xl font-semibold text-center text-gray-300">Players = <span className="text-blue-500">
->>>>>>> Stashed changes
           {allPlayers && allPlayers}
             </span> </p>
           <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
