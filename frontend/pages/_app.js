@@ -1,14 +1,21 @@
 import "../styles/globals.css";
-import { MoralisProvider } from "react-moralis";
 import {NotificationProvider} from 'web3uikit'
+import { ThirdwebProvider } from "thirdweb/react";
+import { Linea } from "@thirdweb-dev/chains";
 
 function MyApp({ Component, pageProps }) {
+
+
   return (
-    <MoralisProvider initializeOnMount={false}>
-      <NotificationProvider>
-      <Component {...pageProps} />
-      </NotificationProvider>
-    </MoralisProvider>
+      <ThirdwebProvider
+        supportedChains={[Linea]}
+        activeChain={Linea}
+        clientId={process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID}
+      >
+        <NotificationProvider>
+          <Component {...pageProps} />
+        </NotificationProvider>
+      </ThirdwebProvider>
   );
 }
 

@@ -1,10 +1,9 @@
+import { ConnectButton } from "thirdweb/react";
 import React from "react";
-import { ConnectButton } from "web3uikit";
+import { client } from "../../EnterLottery";
 
 export default function ConnectBtn() {
   return (
-    <div>
-      <ConnectButton moralisAuth={false} />
-    </div>
+    <ConnectButton client={client} />
   );
 }
