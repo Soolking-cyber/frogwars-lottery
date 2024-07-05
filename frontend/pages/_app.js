@@ -1,15 +1,15 @@
 import "../styles/globals.css";
 import {NotificationProvider} from 'web3uikit'
 import { ThirdwebProvider } from "thirdweb/react";
-import { Linea } from "@thirdweb-dev/chains";
+import { linea } from "thirdweb/chains";
 
 function MyApp({ Component, pageProps }) {
 
 
   return (
       <ThirdwebProvider
-        supportedChains={[Linea]}
-        activeChain={Linea}
+        supportedChains={[linea]}
+        activeChain={linea}
         clientId={process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID}
       >
         <NotificationProvider>
