@@ -91,9 +91,12 @@ export default function EnterLottery() {
   });
 
   const { data: getAllowance } = useReadContract({
+    queryOptions: {
+      enabled: account !== undefined,
+    },
     contract: token,
     method: "allowance",
-    params: [account.address, lotteryAddress],
+    params: [account === undefined ? "0xde07C361CDAAA43200550b9dBa3Bee2Df56379ab" : account.address, lotteryAddress],
   });
 
   const { data: getTotalBalance } = useReadContract({
