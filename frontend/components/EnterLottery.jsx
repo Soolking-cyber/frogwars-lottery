@@ -32,9 +32,8 @@ export default function EnterLottery() {
   const connectionStatus = useActiveWalletConnectionStatus()
   const dispatch = useNotification();
 
-  const lotteryAddress =
-    chain && chain.id in contractAddresses ? contractAddresses[chain.id][0] : null;
-  const tokenAddress = chain && chain.id in contractAddresses ? contractAddresses[chain.id][1] : null;
+  const lotteryAddress = contractAddresses[chain.id][0];
+  const tokenAddress = contractAddresses[chain.id][1];
 
 
   const approveRaw = async function() {
@@ -157,7 +156,7 @@ export default function EnterLottery() {
     if (connectionStatus === "connected" && lotteryAddress && getEntranceFee !== undefined && 
       getNumbersOfPlayers !== undefined && getTotalBalance !== undefined && 
       getAllowance !== undefined && 
-      getLotteryState !== undefined) {
+      getLotteryState !== undefined && getRecentWinner !== undefined) {
       const getAll = async () => {
         const getFee = (getEntranceFee).toString();
         const getNumOfPlayers = (getNumbersOfPlayers).toString();
@@ -174,7 +173,7 @@ export default function EnterLottery() {
       };
       getAll();
     }
-  }, [connectionStatus, getEntranceFee, getNumbersOfPlayers, getTotalBalance, getAllowance, getLotteryState]);
+  }, [connectionStatus, getEntranceFee, getNumbersOfPlayers, getTotalBalance, getAllowance, getLotteryState, getRecentWinner, lotteryAddress]);
 
   return (
     <div className="px-10 py-5">
@@ -195,7 +194,7 @@ export default function EnterLottery() {
           <p className="text-4xl font-semibold text-center text-gray-300 font-customFont">Players = <span className="text-green-500">
           {allPlayers && allPlayers}
             </span> </p>
-          <p className="flex items-center justify-center gap-x-2"> <img className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300 font-customFont"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
+          <p className="flex items-center justify-center gap-x-2"> <Image className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300 font-customFont"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
            <span>
             <button className="px-3 py-1 text-white bg-purple-600 rounded-md font-customFont" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
            </span>
@@ -214,7 +213,7 @@ export default function EnterLottery() {
                 <div>{lotteryNotOpen ? "Lottery Not Open" : "Enter Lottery"}</div>
               )}
             </button>
-            <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" target="_blank" className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
+            <a href="https://www.nile.build/swap?to=0x21d624c846725ABe1e1e7d662E9fB274999009Aa" type="button" target="_blank" rel="noreferrer" className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700">Get Crystals</a>
           </div>
         </div>
       ) : (
