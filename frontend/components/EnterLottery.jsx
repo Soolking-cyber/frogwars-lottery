@@ -209,7 +209,7 @@ console.log(contract);
           </p>
           <div className="text-center">
             <button
-              className="h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer w-80 font-customFont hover:bg-purple-700"
+              className="w-40 h-10 px-4 py-2 mt-8 ml-3 mr-3 text-white bg-purple-600 rounded-md cursor-pointer font-customFont hover:bg-purple-700"
               disabled={isFetching || isLoading || loading || btnLoading || lotteryNotOpen}
               onClick={handleClick}
             >
