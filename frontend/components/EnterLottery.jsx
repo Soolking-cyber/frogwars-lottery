@@ -195,7 +195,7 @@ export default function EnterLottery() {
           <p className="text-4xl font-semibold text-center text-gray-300 font-customFont">Players = <span className="text-green-500">
           {allPlayers && allPlayers}
             </span> </p>
-          <p className="flex items-center justify-center gap-x-2"> <Image className="w-20" src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300 font-customFont"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
+          <p className="flex items-center justify-center gap-x-2"> <Image width={"80px"} height={"80px"}  src="/images/award-img.png" alt="Winner" /> <span className="text-3xl text-gray-300 font-customFont"> Recent Winner: {recentWinner && !showFullAddress ? recentWinner : recentWinner?.slice(0,6) + "..." + recentWinner?.slice(recentWinner?.length-6)} </span>
            <span>
             <button className="px-3 py-1 text-white bg-purple-600 rounded-md font-customFont" onClick={() => setShowFullAddress(!showFullAddress)}>{showFullAddress ? "View" : "Hide"}</button>
            </span>
